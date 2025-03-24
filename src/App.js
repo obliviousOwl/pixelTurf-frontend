@@ -1,24 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+// import SocketComponent from './SocketComponent';
+import GamePage from './pages/GamePage';
+import BattleLog from './pages/BattleLog';
+import { app } from "./firebase";
+import AppNavBar from './components/AppNavBar';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+console.log("🔎 Checking Firebase:", app);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <div className="App">
+            <AppNavBar />
+            <Routes>
+                <Route path="/" element={<GamePage />}></Route>
+                <Route path="/battleLog" element={<BattleLog />}></Route>
+            </Routes>
+        </div>
+    </Router>
   );
 }
 
