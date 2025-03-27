@@ -10,10 +10,20 @@ export default class GameOverScene extends Phaser.Scene {
         this.scores = data.scores || {};
         this.playerId = data.playerId;
         this.playerNames = data.playerNames || {}; // ✅ Store player names
+
+        // console.log(`DATA: ${JSON.stringify(data)}`);
+
+        this.socket.emit("matchResults", {
+            scores: this.scores,
+            playerId: this.playerId,
+            playerNames: this.playerNames,
+        });
     }
 
     create() {
-        console.log(this.playerNames);
+        console.log(`PLAYERID :${JSON.stringify(this.playerId)}`);
+        console.log(`PLAYERNAMSE: ${JSON.stringify(this.playerNames)}`);
+        console.log(`SCORES: ${JSON.stringify(this.scores)}`);
         this.add.text(400, 100, "Game Over", { fontSize: "32px", fill: "#fff" }).setOrigin(0.5);
 
         let winnerId = null;

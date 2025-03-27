@@ -1,0 +1,21 @@
+.custom-table {
+    max-width: 80%; /* Limit the width of the table */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.custom-table .rdt_Table {
+    width: 100%;
+}
+
+.custom-table .rdt_TableHead {
+    font-weight: bold;
+}
+
+.custom-table .rdt_TableRow {
+    text-align: center;
+}
+
+.custom-table .rdt_TableCell {
+    padding: 8px 12px; /* Adjust padding for smaller spacing */
+}
