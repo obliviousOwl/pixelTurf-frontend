@@ -1,32 +1,31 @@
 export default class GameTimer {
-    constructor(scene, duration = 60){
+    constructor(scene, socket) {
         this.scene = scene;
-        this.duration = duration;
-        this.timeLeft = duration;
+        this.socket = socket;
         this.timerText = null;
+
+        this.setupListers();
     }
 
-    start() {
-        this.timerText = this.scene.add.text(20,20,`Time: ${this.timeLeft}`,{
-            fontSize: "24px",
-            fill: "#fff",
-        });
+    setupListers() {
+        this.socket.on("timerUpdate", ({time}) => {
+            // console.log(`⏳ Time Remaining: ${time}s`);
 
-        this.scene.time.addEvent({
-            delay: 1000,
-            callback: this.updateTimer,
-            callbackScope: this,
-            loop: true
-        });
-    }
+            if(!this.timerText) {
+                this.timerText = this.scene.add.text(400, 50, `Time: ${time}s`, {
+                    fontSize: "24px",
+                    fill: "#fff"
+                }).setOrigin(0.5);
+            }
+            else{
+                this.timerText.setText(`Time: ${time}s`);
+            }
+        })
 
-    updateTimer() {
-        this.timeLeft--;
+        this.socket.on("gameOver", ({ room }) => {
+            console.log(`🏁 Game Over in room ${room}`);
 
-        this.timerText.setText(`Time: ${this.timeLeft}`);
 
-        if(this.timeLeft <= 0) {
-            this.scene.scene.start("GameOverScene");
-        }
+        })
     }
 }
