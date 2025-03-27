@@ -7,43 +7,44 @@ class LoadingScene extends Phaser.Scene {
   }
 
   create() {
-    const playerName = this.registry.get("playerName");
-    this.registry.set("playerName", this.playerName);
+    // ✅ Correctly retrieve player name from registry
+    const playerName = this.registry.get("playerName") || "Player";
 
-    console.log(playerName);
+    console.log(`Player Name: ${playerName}`);
+
     this.add.text(400, 300, "Waiting for Players...", { fontSize: "20px", fill: "#fff" })
         .setOrigin(0.5);
 
-    // ✅ Ensure the socket is initialized correctly
+    // ✅ Initialize socket connection
     this.socket = io("http://localhost:5000");
 
     this.socket.on("connect", () => {
         console.log("Connected to server!");
 
-        // ✅ Only emit after connection is established
-        this.socket.emit("findMatch");
+        // ✅ Send player name to the server when requesting a match
+        this.socket.emit("findMatch", { playerName: playerName });
     });
 
     this.socket.on("matchFound", ({ room, players }) => {
-        if(players.length < 2){
+        if (players.length < 2) {
             console.log("Not enough players in the room");
             return;
         }
 
         const playerId = this.socket.id; // Get your own ID
         const opponent = players.find(p => p.id !== playerId);
-        console.log(playerId);
-        console.log(opponent);
-        console.log(`Opponent id is ${opponent.id}`);
 
-        console.log(`Match Found! Room: ${room}, You: ${playerId}, Opponent: ${opponent.id}`);
-
+        console.log(`Match Found! Room: ${room}`);
+        console.log(`You: ${playerId} (${playerName})`);
+        console.log(`Opponent: ${opponent.id} (${opponent.name})`);
 
         this.scene.start("GameScene", {
             socket: this.socket,
             room,
             playerId,
-            opponentId: opponent.id
+            playerName,
+            opponentId: opponent.id,
+            opponentName: opponent.name
         });
     });
 

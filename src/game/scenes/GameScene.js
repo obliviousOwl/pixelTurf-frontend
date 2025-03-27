@@ -35,11 +35,11 @@ export default class GameScene extends Phaser.Scene {
 
             if (!this.players[self.id]) {
                 this.players[self.id] = createPlayer(this, self);
-                this.scoreManager.initializeScore(self.id, 50, 50);
+                this.scoreManager.initializeScore(self.id, self.name, 50, 50);
             }
             if (!this.players[opponent.id]) {
                 this.players[opponent.id] = createPlayer(this, opponent);
-                this.scoreManager.initializeScore(opponent.id, 650, 50);
+                this.scoreManager.initializeScore(opponent.id, opponent.name, 650, 50);
             }
 
             console.log(`Rendering Player: ${JSON.stringify(self)}`);

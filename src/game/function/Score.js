@@ -2,16 +2,21 @@ export default class ScoreManager {
     constructor(scene) {
         this.scene = scene;
         this.score = {};
-        this.scoreTexts = {}
+        this.scoreTexts = {};
+        this.playerNames = {};
     }
 
-    initializeScore(playerId, x, y){
+    initializeScore(playerId, playerName, x, y){
         this.score[playerId] = 0;
+        this.playerNames[playerId] = playerName;
 
-        this.scoreTexts[playerId] = this.scene.add.text(x, y - 30, "Score: 0", {
-            fontSize: "14px",
-            fill: "#fff",
-        }).setOrigin(0.5);
+        this.scoreTexts[playerId] = this.scene.add.text(
+            x, y - 30, `${playerName}: Score 0`, // ✅ Include the player's name
+            {
+                fontSize: "14px",
+                fill: "#fff",
+            }
+        ).setOrigin
     }
 
     updateScore(scores) {
