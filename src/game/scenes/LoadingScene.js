@@ -15,7 +15,7 @@ class LoadingScene extends Phaser.Scene {
         .setOrigin(0.5);
 
     // ✅ Initialize socket connection
-    this.socket = io("http://localhost:5000");
+    this.socket = io(`${process.env.REACT_APP_BACKEND_STRING}`);
 
     this.socket.on("connect", () => {
         console.log("Connected to server!");

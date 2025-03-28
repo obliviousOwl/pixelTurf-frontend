@@ -20,7 +20,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(400, 300, "We are now in the game", { fontSize: "20px", fill: "#ffff" }).setOrigin(0.5);
         this.physics.world.setBounds(0, 0, this.cameras.main.width, this.cameras.main.height);
         this.socket.emit("requestPlayerData", this.room);
         this.scoreManager = new ScoreManager(this);

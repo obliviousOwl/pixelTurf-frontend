@@ -11,7 +11,7 @@ const Leaderboard = () => {
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await fetch('http://localhost:5000/leaderboard/');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_STRING}/leaderboard/`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
