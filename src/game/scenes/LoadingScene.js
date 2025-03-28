@@ -10,7 +10,6 @@ class LoadingScene extends Phaser.Scene {
     // ✅ Correctly retrieve player name from registry
     const playerName = this.registry.get("playerName") || "Player";
 
-    console.log(`Player Name: ${playerName}`);
 
     this.add.text(400, 300, "Waiting for Players...", { fontSize: "20px", fill: "#fff" })
         .setOrigin(0.5);
@@ -27,16 +26,13 @@ class LoadingScene extends Phaser.Scene {
 
     this.socket.on("matchFound", ({ room, players }) => {
         if (players.length < 2) {
-            console.log("Not enough players in the room");
             return;
         }
 
         const playerId = this.socket.id; // Get your own ID
         const opponent = players.find(p => p.id !== playerId);
 
-        console.log(`Match Found! Room: ${room}`);
-        console.log(`You: ${playerId} (${playerName})`);
-        console.log(`Opponent: ${opponent.id} (${opponent.name})`);
+
 
         this.scene.start("GameScene", {
             socket: this.socket,

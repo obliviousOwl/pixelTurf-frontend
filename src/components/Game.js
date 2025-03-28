@@ -7,10 +7,10 @@ const Game = () => {
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
-      parent: gameRef.current, // Attach Phaser to this div
+      parent: gameRef.current,
       width: 800,
       height: 600,
-      backgroundColor: "#000000", // Set canvas background to white
+      backgroundColor: "#000000",
       physics: {
         default: "arcade",
         arcade: { gravity: { y: 0 }, debug: false },
@@ -29,16 +29,16 @@ const Game = () => {
     }
 
     function create() {
-      const randomColor = Phaser.Display.Color.RandomRGB().color; // Get random color
+      const randomColor = Phaser.Display.Color.RandomRGB().color;
       const radius = 20;
-      const textureSize = radius * 2 + 8; // Extra space for the stroke
+      const textureSize = radius * 2 + 8;
       const circleGraphics = this.make.graphics({ x: 0, y: 0, add: false });
 
       // Draw the black outline
       circleGraphics.lineStyle(4, 0x000000); // Black outline, 4px thick
 
       // Draw the filled circle
-      circleGraphics.fillStyle(randomColor, 1); // Fill with random color
+      circleGraphics.fillStyle(randomColor, 1);
       circleGraphics.fillCircle(textureSize / 2, textureSize / 2, radius);
       circleGraphics.strokeCircle(textureSize / 2, textureSize / 2, radius);
 

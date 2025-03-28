@@ -9,9 +9,9 @@ export default class GameOverScene extends Phaser.Scene {
         this.socket = data.socket;
         this.scores = data.scores || {};
         this.playerId = data.playerId;
-        this.playerNames = data.playerNames || {}; // ✅ Store player names
+        this.playerNames = data.playerNames || {};
 
-        // console.log(`DATA: ${JSON.stringify(data)}`);
+
 
         this.socket.emit("matchResults", {
             scores: this.scores,
@@ -21,15 +21,13 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-        console.log(`PLAYERID :${JSON.stringify(this.playerId)}`);
-        console.log(`PLAYERNAMSE: ${JSON.stringify(this.playerNames)}`);
-        console.log(`SCORES: ${JSON.stringify(this.scores)}`);
+
         this.add.text(400, 100, "Game Over", { fontSize: "32px", fill: "#fff" }).setOrigin(0.5);
 
         let winnerId = null;
         let highestScore = -1;
 
-        // ✅ Find the player with the highest score
+        //  Find the player with the highest score
         Object.entries(this.scores).forEach(([id, score]) => {
             if (score > highestScore) {
                 highestScore = score;
@@ -37,11 +35,11 @@ export default class GameOverScene extends Phaser.Scene {
             }
         });
 
-        // ✅ Determine if the local player won or lost
+        //  Determine if the local player won or lost
         const resultText = winnerId === this.playerId ? "Victory!" : "Defeat!";
         this.add.text(400, 150, resultText, { fontSize: "28px", fill: winnerId === this.playerId ? "#0f0" : "#f00" }).setOrigin(0.5);
 
-        // ✅ Display all scores with player names
+        //  Display all scores with player names
         let yPos = 200;
         Object.entries(this.scores).forEach(([id, score]) => {
             const playerName = this.playerNames[id] || `Player ${id}`; // ✅ Get name
@@ -49,7 +47,7 @@ export default class GameOverScene extends Phaser.Scene {
             yPos += 40;
         });
 
-        // ✅ Add "Play Again" button (refreshes the page)
+        //  Add "Play Again" button (refreshes the page)
         const playAgainText = this.add.text(400, yPos + 50, "Play Again", { fontSize: "24px", fill: "#ff0" })
             .setOrigin(0.5)
             .setInteractive();

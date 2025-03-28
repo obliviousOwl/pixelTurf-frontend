@@ -9,7 +9,6 @@ export default class GameTimer {
 
     setupListers() {
         this.socket.on("timerUpdate", ({time}) => {
-            // console.log(`⏳ Time Remaining: ${time}s`);
 
             if(!this.timerText) {
                 this.timerText = this.scene.add.text(400, 50, `Time: ${time}s`, {

@@ -15,8 +15,8 @@ export default class GameScene extends Phaser.Scene {
         this.room = data.room;
         this.playerId = data.playerId;
         this.opponentId = data.opponentId;
-        this.players = {}; // ✅ Reset players object
-        this.scores = {}; // ✅ Store latest scores
+        this.players = {};
+        this.scores = {};
     }
 
     create() {
@@ -28,9 +28,6 @@ export default class GameScene extends Phaser.Scene {
         this.gameTimer = new GameTimer(this, this.socket);
 
         this.socket.on("receivedPlayerData", ({ self, opponent }) => {
-            console.log(`Self: ${JSON.stringify(self)}`);
-            console.log(`Opponent ${JSON.stringify(opponent)}`);
-            console.log(`You are ${self.role}. Your opponent is ${opponent.id}`);
 
             if (!this.players[self.id]) {
                 this.players[self.id] = createPlayer(this, self);
@@ -41,8 +38,7 @@ export default class GameScene extends Phaser.Scene {
                 this.scoreManager.initializeScore(opponent.id, opponent.name, 650, 50);
             }
 
-            console.log(`Rendering Player: ${JSON.stringify(self)}`);
-            console.log(`Rendering Opponent: ${JSON.stringify(opponent)}`);
+
 
             this.controls = new PlayerControls(this, self.id);
         });
@@ -58,29 +54,27 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.socket.on("paintUpdated", ({ playerId, x, y }) => {
-            const player = this.players[playerId]; // Retrieve player object
+            const player = this.players[playerId];
             if (!player) {
-                console.warn(`⚠️ Paint event received for unknown player: ${playerId}`);
+
                 return;
             }
-            this.canvas.paint(x, y, player); // Pass the whole player object
+            this.canvas.paint(x, y, player);
         });
 
         this.socket.on("scoreUpdate", ({ scores }) => {
-            this.scores = scores; // ✅ Store latest scores
-            this.scoreManager.updateScore(scores); // ✅ Update score UI
+            this.scores = scores;
+            this.scoreManager.updateScore(scores);
         });
 
-        this.socket.on("gameOver", ({ playerNames }) => { // ✅ Get playerNames from server
-            console.log("🚨 Game Over! Sending final scores to GameOverScene...");
-            console.log("Final Scores:", this.scores);
-            console.log("Player Names:", playerNames); // ✅ Log received names
+        this.socket.on("gameOver", ({ playerNames }) => {
+
 
             this.scene.start("GameOverScene", {
                 socket: this.socket,
-                scores: this.scores, // ✅ Pass latest scores
+                scores: this.scores,
                 playerId: this.playerId,
-                playerNames: playerNames, // ✅ Use player names from server
+                playerNames: playerNames,
             });
         });
     }

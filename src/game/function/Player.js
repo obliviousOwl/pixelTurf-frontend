@@ -13,10 +13,9 @@ export function createPlayer(scene, playerData) {
         convertedColor
     );
 
-    console.log(`Create Player Function | player${id} added at (${position.x}, ${position.y}) with color ${color}`);
 
     player.id = id;
-    player.color = convertedColor; // ✅ Store the color inside the player object
+    player.color = convertedColor;
     scene.physics.add.existing(player);
     player.body.setCollideWorldBounds(true);
     return player;
