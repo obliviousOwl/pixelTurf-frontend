@@ -4,6 +4,7 @@ import { createPlayer } from "../function/Player.js";
 import Canvas from "../function/Canvas";
 import GameTimer from "../function/GameTimer.js";
 import ScoreManager from "../function/Score";
+// import VirtualJoystick from 'phaser3-rex-plugins/plugins/virtualjoystick.js';
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -19,15 +20,50 @@ export default class GameScene extends Phaser.Scene {
         this.scores = {};
     }
 
+    preload() {
+        // ✅ Use correct key for loading
+        this.load.plugin(
+            'rexvirtualjoystickplugin',
+            'https://cdn.jsdelivr.net/npm/phaser3-rex-plugins@latest/dist/rexvirtualjoystickplugin.min.js',
+            true
+        );
+    }
+
     create() {
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isPhone = window.innerWidth < 768;
+        console.log(isMobile);
+
+        if (isMobile) {
+            // ✅ Use correct plugin retrieval
+            const RexVirtualJoystick = this.plugins.get('rexvirtualjoystickplugin');
+            console.log(RexVirtualJoystick);
+            if (RexVirtualJoystick) {
+                this.joystick = RexVirtualJoystick.add(this, {
+                    x: isPhone ? this.cameras.main.width / 2 : this.cameras.main.width * 0.85,
+                    y: this.cameras.main.height * 0.9,
+                    radius: 50,
+                    base: this.add.circle(0, 0, 50, 0x888888),
+                    thumb: this.add.circle(0, 0, 25, 0xffffff),
+                    dir: '8dir',
+                    forceMin: 10,
+                    enable: true
+                });
+
+                // ✅ Store joystick keys
+                this.joystickKeys = this.joystick.createCursorKeys();
+                console.log(`x: ${this.joystick.x}, y: ${this.joystick.y}`);
+            } else {
+                console.error("RexVirtualJoystick plugin not found!");
+            }
+        }
+
         this.physics.world.setBounds(0, 0, this.cameras.main.width, this.cameras.main.height);
         this.socket.emit("requestPlayerData", this.room);
         this.scoreManager = new ScoreManager(this);
-
         this.gameTimer = new GameTimer(this, this.socket);
 
         this.socket.on("receivedPlayerData", ({ self, opponent }) => {
-
             if (!this.players[self.id]) {
                 this.players[self.id] = createPlayer(this, self);
                 this.scoreManager.initializeScore(self.id, self.name, 50, 50);
@@ -37,9 +73,8 @@ export default class GameScene extends Phaser.Scene {
                 this.scoreManager.initializeScore(opponent.id, opponent.name, 650, 50);
             }
 
-
-
-            this.controls = new PlayerControls(this, self.id);
+            // ✅ Pass joystick to PlayerControls
+            this.controls = new PlayerControls(this, self.id, this.joystickKeys);
         });
 
         const width = this.cameras.main.width;
@@ -54,10 +89,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.socket.on("paintUpdated", ({ playerId, x, y }) => {
             const player = this.players[playerId];
-            if (!player) {
-
-                return;
-            }
+            if (!player) return;
             this.canvas.paint(x, y, player);
         });
 
@@ -67,8 +99,6 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.socket.on("gameOver", ({ playerNames }) => {
-
-
             this.scene.start("GameOverScene", {
                 socket: this.socket,
                 scores: this.scores,
