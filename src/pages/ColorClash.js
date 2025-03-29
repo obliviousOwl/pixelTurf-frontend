@@ -1,7 +1,8 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import bannerImage from "../assets/img/color-clash-banner.png"; // Ensure the banner is in the assets folder
+import bannerImage from "../assets/img/color-clash-banner.png";
+import bannerImageMobile from "../assets/img/color-clash-banner-Mobile.png";
 
 const ColorClash = () => {
   const navigate = useNavigate();
@@ -17,12 +18,15 @@ const ColorClash = () => {
       onClick={handleClick}
       style={{ cursor: "pointer", width: "auto", height: "100vh", overflow: "hidden" }}
     >
-      <img
-        src={bannerImage}
-        alt="Color Clash Banner"
-        className="banner-image"
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-      />
+      <picture>
+        <source srcSet={bannerImageMobile} media="(max-width: 768px)" />
+        <img
+          src={bannerImage}
+          alt="Color Clash Banner"
+          className="banner-image"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </picture>
     </Container>
   );
 };

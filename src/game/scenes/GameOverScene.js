@@ -29,7 +29,7 @@ export default class GameOverScene extends Phaser.Scene {
         let winnerId = null;
         let highestScore = -1;
 
-        // Find the player with the highest score
+        // Find the player with the highest scorefirebase 
         Object.entries(this.scores).forEach(([id, score]) => {
             if (score > highestScore) {
                 highestScore = score;
