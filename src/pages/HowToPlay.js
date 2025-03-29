@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Card } from "react-bootstrap";
 
-
 const HowToPlay = () => {
     return (
         <Container className="mt-4 pt-4">
@@ -23,7 +22,12 @@ const HowToPlay = () => {
               <li><strong>Enter the Game Lobby:</strong> Click "Play" to enter matchmaking. Wait for another player to join. Once two players are ready, the game begins!</li>
               <li><strong>Game Controls:</strong>
                 <ul>
-                  <li><strong>Move:</strong> Use <strong>Arrow Keys</strong> to navigate.</li>
+                  <li><strong>Move:</strong>
+                    <ul>
+                      <li><strong>PC:</strong> Use <strong>Arrow Keys</strong> to navigate.</li>
+                      <li><strong>Mobile:</strong> Use the <strong>on-screen joystick</strong> to move your character.</li>
+                    </ul>
+                  </li>
                   <li><strong>Paint Tiles:</strong> Simply move over tiles to color them in your color.</li>
                   <li><strong>Reclaim Turf:</strong> You can paint over your opponent’s tiles to take control of their area!</li>
                 </ul>

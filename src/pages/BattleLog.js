@@ -63,11 +63,10 @@ const Leaderboard = () => {
                 <Col xs={12} md={8} className="mx-auto">
                     <Card className="leaderboard-card shadow-lg">
                         <Card.Body>
-                            <Card.Title className="text-center leaderboard-title">🏆 Leaderboard 🏆</Card.Title>
+                            <Card.Title className="text-center leaderboard-title">🏆 Leaderboard (Top 10) 🏆</Card.Title>
                             <DataTable
                                 columns={columns}
                                 data={leaderboard}
-                                pagination
                                 highlightOnHover
                                 striped
                                 responsive

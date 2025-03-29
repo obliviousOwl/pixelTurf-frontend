@@ -1,36 +1,91 @@
+/* Cyberpunk-themed background */
 .game-container {
-    background: linear-gradient(135deg, #1a1a1a, #333);
+    background: linear-gradient(45deg, #0d0d0d, #1a1a1a, #000000);
     color: white;
-  }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
 
-  .menu-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+/* Neon-glass style menu */
+.menu-container {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-  }
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
-  .player-input {
+.menu-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+/* Title with glowing effect */
+.menu-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    color: cyan;
+    text-shadow: 0 0 10px cyan, 0 0 20px cyan;
+}
+
+/* Input field with neon effect */
+.player-input {
     font-size: 1.2rem;
-    padding: 10px;
-    border-radius: 8px;
-  }
-
-  .start-button {
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .start-button:hover {
-    transform: scale(1.05);
-  }
-
-  .game-screen {
-    width: 800px;
-    height: 600px;
-    border: 4px solid #fff;
+    padding: 12px;
     border-radius: 10px;
-  }
+    border: 2px solid cyan;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    transition: 0.3s;
+    box-shadow: 0 0 10px cyan;
+}
+
+.player-input::placeholder {
+    color: rgba(0, 255, 255, 0.6);
+}
+
+.player-input:focus {
+    background: rgba(0, 255, 255, 0.1);
+    outline: none;
+    box-shadow: 0 0 15px cyan;
+}
+
+/* Cyberpunk glowing button */
+.start-button {
+    font-size: 1.3rem;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #00ffff, #0099ff);
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease-in-out;
+}
+
+.start-button:hover {
+    transform: scale(1.08);
+    background: linear-gradient(135deg, #0099ff, #0056b3);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+/* Game screen container with futuristic frame */
+.game-screen {
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 800px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    border: 3px solid cyan;
+}

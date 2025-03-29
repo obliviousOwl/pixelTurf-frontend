@@ -4,27 +4,31 @@ export default class GameTimer {
         this.socket = socket;
         this.timerText = null;
 
-        this.setupListers();
+        this.setupListeners();
+        this.handleResize({ width: this.scene.scale.width });
+        this.scene.scale.on("resize", this.handleResize, this);
     }
 
-    setupListers() {
-        this.socket.on("timerUpdate", ({time}) => {
-
-            if(!this.timerText) {
-                this.timerText = this.scene.add.text(400, 50, `Time: ${time}s`, {
+    setupListeners() {
+        this.socket.on("timerUpdate", ({ time }) => {
+            if (!this.timerText) {
+                this.timerText = this.scene.add.text(this.scene.scale.width / 2, 50, `Time: ${time}s`, {
                     fontSize: "24px",
                     fill: "#fff"
                 }).setOrigin(0.5);
-            }
-            else{
+            } else {
                 this.timerText.setText(`Time: ${time}s`);
             }
-        })
+        });
 
         this.socket.on("gameOver", ({ room }) => {
-            console.log(`🏁 Game Over in room ${room}`);
+            console.log(`🏁 Game Over`);
+        });
+    }
 
-
-        })
+    handleResize(gameSize) {
+        if (this.timerText) {
+            this.timerText.setPosition(gameSize.width / 2, 50);
+        }
     }
 }

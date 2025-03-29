@@ -21,7 +21,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        // ✅ Use correct key for loading
         this.load.plugin(
             'rexvirtualjoystickplugin',
             'https://cdn.jsdelivr.net/npm/phaser3-rex-plugins@latest/dist/rexvirtualjoystickplugin.min.js',
@@ -30,12 +29,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+
         const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         const isPhone = window.innerWidth < 768;
         console.log(isMobile);
 
         if (isMobile) {
-            // ✅ Use correct plugin retrieval
             const RexVirtualJoystick = this.plugins.get('rexvirtualjoystickplugin');
             console.log(RexVirtualJoystick);
             if (RexVirtualJoystick) {
@@ -52,7 +51,7 @@ export default class GameScene extends Phaser.Scene {
 
                 // ✅ Store joystick keys
                 this.joystickKeys = this.joystick.createCursorKeys();
-                console.log(`x: ${this.joystick.x}, y: ${this.joystick.y}`);
+
             } else {
                 console.error("RexVirtualJoystick plugin not found!");
             }
@@ -66,14 +65,13 @@ export default class GameScene extends Phaser.Scene {
         this.socket.on("receivedPlayerData", ({ self, opponent }) => {
             if (!this.players[self.id]) {
                 this.players[self.id] = createPlayer(this, self);
-                this.scoreManager.initializeScore(self.id, self.name, 50, 50);
+                this.scoreManager.initializeScore(self.id, self.name, true);
             }
             if (!this.players[opponent.id]) {
                 this.players[opponent.id] = createPlayer(this, opponent);
-                this.scoreManager.initializeScore(opponent.id, opponent.name, 650, 50);
+                this.scoreManager.initializeScore(opponent.id, opponent.name, false);
             }
 
-            // ✅ Pass joystick to PlayerControls
             this.controls = new PlayerControls(this, self.id, this.joystickKeys);
         });
 

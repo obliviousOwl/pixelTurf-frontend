@@ -7,46 +7,47 @@ class LoadingScene extends Phaser.Scene {
   }
 
   create() {
-    // ✅ Correctly retrieve player name from registry
     const playerName = this.registry.get("playerName") || "Player";
 
+    this.waitingText = this.add.text(
+      this.scale.width / 2,
+      this.scale.height / 2,
+      "Waiting for Players...",
+      { fontSize: "20px", fill: "#fff" }
+    ).setOrigin(0.5);
 
-    this.add.text(400, 300, "Waiting for Players...", { fontSize: "20px", fill: "#fff" })
-        .setOrigin(0.5);
+    this.scale.on("resize", this.centerText, this);
 
-    // ✅ Initialize socket connection
     this.socket = io(`${process.env.REACT_APP_BACKEND_STRING}`);
 
     this.socket.on("connect", () => {
-        console.log("Connected to server!");
-
-        // ✅ Send player name to the server when requesting a match
-        this.socket.emit("findMatch", { playerName: playerName });
+      console.log("Connected to server!");
+      this.socket.emit("findMatch", { playerName });
     });
 
     this.socket.on("matchFound", ({ room, players }) => {
-        if (players.length < 2) {
-            return;
-        }
+      if (players.length < 2) return;
 
-        const playerId = this.socket.id; // Get your own ID
-        const opponent = players.find(p => p.id !== playerId);
+      const playerId = this.socket.id;
+      const opponent = players.find(p => p.id !== playerId);
 
-
-
-        this.scene.start("GameScene", {
-            socket: this.socket,
-            room,
-            playerId,
-            playerName,
-            opponentId: opponent.id,
-            opponentName: opponent.name
-        });
+      this.scene.start("GameScene", {
+        socket: this.socket,
+        room,
+        playerId,
+        playerName,
+        opponentId: opponent.id,
+        opponentName: opponent.name,
+      });
     });
 
     this.socket.on("connect_error", (err) => {
-        console.error("Socket connection error:", err);
+      console.error("Socket connection error:", err);
     });
+  }
+
+  centerText() {
+    this.waitingText.setPosition(this.scale.width / 2, this.scale.height / 2);
   }
 }
 
